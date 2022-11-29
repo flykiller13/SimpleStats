@@ -18,14 +18,13 @@ struct SIMPLESTATS_API FStatData : public  FTableRowBase
 	GENERATED_USTRUCT_BODY()
 
 		FStatData()
-		: BaseValue( 0.f ), MinValue( 0.f ), MaxValue( 100.f ), CurrentValue( 0.f ),  ChangePerTick( 0.f )
-	{
-	}
+		: BaseValue( 0.f ), MinValue( 0.f ), MaxValue( 100.f ), CurrentValue( 0.f ), ChangePerTick( 0.f ), bFreeze( false ), StatCurve( NULL )
+	{}
 
 	FStatData( float InBaseValue, float InMinValue, float InMaxValue, float InChangePerTick )
-		: BaseValue( InBaseValue ), MinValue( InMinValue ), MaxValue( InMaxValue ), CurrentValue( InBaseValue ),  ChangePerTick( InChangePerTick )
-	{
-	}
+		: BaseValue( InBaseValue ), MinValue( InMinValue ), MaxValue( InMaxValue ), CurrentValue( InBaseValue ), ChangePerTick( InChangePerTick ),
+		bFreeze( false ), StatCurve( NULL )
+	{}
 
 	virtual ~FStatData()
 	{}
@@ -135,7 +134,7 @@ public:
 		return 0;
 	}
 
-	virtual void SetFreezeStat(bool NewFreeze)
+	virtual void SetFreezeStat( bool NewFreeze )
 	{
 		bFreeze = NewFreeze;
 	}
@@ -160,10 +159,10 @@ protected:
 	UFUNCTION( BlueprintCallable )
 		void InitStatsFromMap( TMap<FName, FStatData> NewStats );
 
-	UFUNCTION( BlueprintImplementableEvent ) 
+	UFUNCTION( BlueprintImplementableEvent )
 		void Init();
 
-public: 
+public:
 
 	/*
 	*  Properties and Delegates
@@ -179,7 +178,7 @@ public:
 	*  Main Stat Data struct control
 	*/
 
-	UFUNCTION( BlueprintCallable , BlueprintPure)
+	UFUNCTION( BlueprintCallable, BlueprintPure )
 		FStatData& GetStat( FName StatName );
 
 	/*
@@ -200,7 +199,7 @@ public:
 	UFUNCTION( BlueprintCallable, BlueprintPure )
 		float GetStatCurrentValue( FName StatName );
 
-	UFUNCTION( BlueprintCallable)
+	UFUNCTION( BlueprintCallable )
 		float SetStatCurrentValue( FName StatName, float Value );
 
 	UFUNCTION( BlueprintCallable )
